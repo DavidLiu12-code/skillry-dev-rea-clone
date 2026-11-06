@@ -1,0 +1,44 @@
+/* Study-clone overlay — does not replace captured Tailwind (styles-C2oHS5g0.css). */
+skillry-app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+#rea-study-banner {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  position: relative;
+  z-index: 80;
+  padding: 8px 16px;
+  text-align: center;
+  font-family: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: #f4f1ea;
+  background: #161616;
+  border-bottom: 1px solid rgba(244, 255, 113, 0.35);
+}
+
+#rea-study-banner strong {
+  color: #f4ff71;
+  font-weight: 700;
+}
+
+#rea-study-banner code {
+  font-size: 11px;
+  word-break: break-all;
+  color: #d7d2c6;
+}
+
+#rea-study-banner a {
+  color: #f4ff71;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+#rea-study-banner a:hover {
+  color: #fff;
+}
+

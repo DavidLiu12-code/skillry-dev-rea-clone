@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>METHOD-REA — skillry.dev study clone</title>
+<style>
+  body { margin: 0; font-family: Georgia, "Times New Roman", serif; background: #f6f3ec; color: #161513; }
+  main { max-width: 48rem; margin: 0 auto; padding: 3rem 1.4rem 5rem; }
+  h1, h2 { font-family: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif; }
+  h1 { font-size: 2rem; letter-spacing: -0.03em; }
+  h2 { margin-top: 2.4rem; font-size: 1.35rem; }
+  p, li { line-height: 1.6; }
+  code { font-size: 0.86em; background: rgba(0,0,0,.06); padding: .1em .35em; border-radius: 4px; word-break: break-all; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.95rem; background: #fff; }
+  th, td { border: 1px solid #ddd6c8; padding: .55rem .65rem; vertical-align: top; }
+  th { background: #efe8d8; text-align: left; }
+  a { color: #1a1a1a; }
+  .back { font-family: ui-sans-serif, system-ui, sans-serif; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<main>
+<p class="back"><a href="./">← Homepage clone</a> · <a href="https://skillry.dev/">Original skillry.dev</a></p>
+<h1>How this clone was made (REA path)</h1>
+<p>This repository is a <strong>homepage-level study clone</strong> of <a href="https://skillry.dev/" rel="noopener">skillry.dev</a>. It is <strong>not</strong> the official Skillry product, not a 1:1 recreation of the full catalog (the live site advertises on the order of tens of thousands of routes), and it does not implement authentication, checkout, or Skill installation.</p>
+<p>Evidence ID: <code>ev_18b21c7510a94258edc599b24acfabae504985786afeeb3ae2559409c399523d</code></p>
+<p>Operation: <code>capture_browser_scenario</code> (Playwright / Chromium 156, controlled replay, ~7940ms, 384 retained network events)</p>
+<p>Source artifacts (local evidence dir, not committed in full): <code>/workspace/skillry-rea/</code></p>
+<h2>Evidence that actually built the page</h2>
+<table><thead><tr><th>Artifact</th><th>What it contributed</th></tr></thead><tbody><tr><td><code>final-dom.html</code> (~1.1MB)</td><td>Post-hydration serialized homepage DOM: layout classes, section order, card markup, FAQ <code>&lt;details&gt;</code>, footer, promo banner. The published <code>index.html</code> is this snapshot with scripts stripped and URLs rewritten.</td></tr><tr><td><code>final.png</code></td><td>Visual check of the hero (promo bar, nav, wordmark, icon grid, CTAs, “Works with” row).</td></tr><tr><td><code>assets/styles-C2oHS5g0.css</code></td><td>Captured compiled Tailwind bundle (<code>url</code>: <code>https://skillry.dev/assets/styles-C2oHS5g0.css</code>). Font <code>url()</code> paths rewritten so the three Bricolage files resolve next to the CSS. <code>--tw-*</code> utility count in findings: ~2882.</td></tr><tr><td><code>assets/bricolage-{400,600,700}.woff2</code></td><td>Captured local font files (original paths <code>/fonts/bricolage-*.woff2</code>).</td></tr><tr><td><code>assets/logo.png</code>, <code>logo-dark.png</code>, <code>favicon.svg</code></td><td>Nav / theme-aware wordmark.</td></tr><tr><td><code>assets/skill-logo-*.webp</code></td><td>Hero icon grid (26 of 29 frames captured; 14 / 15 / 28 hotlinked from the origin).</td></tr><tr><td>Agent mark SVGs (<code>claudecode-color-<em>.svg</code>, <code>codex-color-</em>.svg</code>, <code>cursor-<em>.svg</code>, <code>grok-</em>.svg</code>, …)</td><td>“Works with” row and per-card compatibility icons that were present in the network body dump.</td></tr><tr><td><code>assets/en-CliqJ_gb.json</code></td><td>i18n strings used to confirm section copy (hero, studio, FAQ, pricing labels) against the DOM. Not executed at runtime.</td></tr><tr><td><code>a11y.json</code> / accessibility tree</td><td>Structured inventory of 80 visible skill cards (8 × Featured, Free, and each Trending / Top-rated category), testimonials, and pricing figures.</td></tr><tr><td><code>FINDINGS.md</code> / <code>network-index.json</code></td><td>Stack signals and URL map.</td></tr></tbody></table>
+<p>Pricing figures read from the captured a11y tree (promo snapshot, 50% off): Monthly <strong>$9.99</strong> (was $19.9) / month, Yearly <strong>$79</strong> (was $158) / year, Founding Lifetime <strong>$169</strong> (was $249) one-time. The countdown on the live clone is recomputed from the captured deadline copy: “Ends November 30, 2026 at 11:59 PM Pacific Time.”</p>
+<h2>Observed stack (from captured network bodies, not guessed)</h2>
+<ul><li>Vite + React SPA (<code>createRoot</code>, <code>__vite</code> markers in the main bundle)</li><li>Tailwind utility CSS (the captured <code>styles-C2oHS5g0.css</code>)</li><li>Signals for Base UI / cmdk / vaul / sonner in JS+CSS</li><li>TanStack mentions in the bundle; no <code>wouter</code>; no <code>framer-motion</code> package name</li><li>Fonts: local Bricolage Grotesque woff2 (400 / 600 / 700)</li><li>Media: <code>media.skillry.dev</code> (Cloudflare image resizing) and some <code>cdn.sanity.io</code> marks</li><li>Auth probe: <code>GET /api/auth/get-session</code> (body captured as unauthenticated)</li><li>Analytics noise that was <strong>not</strong> replayed here: Cloudflare beacon, GTM, Ahrefs, promotekit, vibecafe</li></ul>
+<p>The original app JS (<code>main-BVpXm-Ai.js</code> and friends) was captured but <strong>intentionally not shipped</strong>. This clone is a static replay of the rendered homepage, not a redistribution of the Skillry client.</p>
+<h2>What “REA” changed versus a static scrape + hand-coded page</h2>
+<p>A first-paint HTML scrape of this site would mostly see a Vite shell. The catalog grids, card titles, install counts, testimonials, pricing amounts, and FAQ answers are filled in after React hydrates and after XHR/fetch to CMS / app APIs.</p>
+<p>REA’s <code>capture_browser_scenario</code> waits through that load, then exports:</p>
+<ol><li><strong>The hydrated DOM</strong>, so section structure and Tailwind class names can be reused instead of restyled from a screenshot.</li><li><strong>Network response bodies</strong>, so the exact hashed CSS, local fonts, and hero/logo binaries can be copied rather than re-derived.</li><li><strong>An accessibility tree</strong>, so card data can be listed as structured evidence (name, category, install count, agent marks) instead of OCR.</li><li><strong>A screenshot</strong> for visual regression against the replay.</li></ol>
+<p>That is the opposite of “save page / copy computed styles / invent a new component tree.” The other study clone (static scan + hand reconstruction) rebuilds look-and-feel in fresh markup; this one <strong>replays captured markup + captured CSS</strong> and only adds a thin overlay (disclaimer banner, URL rewriting, countdown, carousel scroll, theme toggle, and redirects of Sign in / Subscribe to the original site).</p>
+<h2>URL policy</h2>
+<ul><li>Captured static files are served locally from <code>assets/</code>.</li><li>Missing hero frames <code>skill-logo-14/15/28.webp</code> and any <code>/assets/*</code> SVG that was not in the body dump are hotlinked to <code>https://skillry.dev/...</code>.</li><li>Skill card preview images (<code>/skills/&lt;slug&gt;/media/preview-1.webp?...</code>) and catalog / docs / legal routes are hotlinked to the original origin.</li><li>Studio step images and testimonial avatars stay on <code>https://media.skillry.dev/...</code> (those bodies were not all saved locally).</li><li>Subscribe / Sign in / Connect / Search controls are not implemented locally; clicks go to skillry.dev. There is no checkout, no session API, and no exploit or auth bypass.</li></ul>
+<h2>Not restored</h2>
+<ul><li>The rest of the Skillry router (skill detail, directory filters, learn/docs, MCP setup flows, auth, checkout).</li><li>Nav mega-menus (Categories, AI videos, Resources) and the in-page search palette (they are buttons without the original client JS).</li><li>Request-a-Skill dialog and language picker.</li><li>Original analytics / promo-kit / Cloudflare beacon (stripped on purpose).</li><li>Pixel-perfect motion that lived only in JS (some carousels still scroll via native <code>overflow-x-auto</code> plus a “Next” listener).</li></ul>
+</main>
+</body>
+</html>
